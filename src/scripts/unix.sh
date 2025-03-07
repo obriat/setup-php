@@ -196,8 +196,8 @@ run_script() {
   args=("$@")
   step_log "OBR get -q -e $github/$repo/$latest/install.sh  $jsdeliver/$repo@main/scripts/install.sh $setup_php/$repo/install.sh"
   step_log "$http_proxy $https_proxy" 
-  curl -vvv https://cdn.jsdelivr.net/gh/shivammathur/php-builder@main/scripts/install.sh --output OBR.txt
-  step_log "$(ls -la)" 
+  curl -vvv https://cdn.jsdelivr.net/gh/shivammathur/php-builder@main/scripts/install.sh --output /tmp/OBR.txt
+  step_log "$(ls -la) /tmp/" 
   get -q -e /tmp/install.sh "$github/$repo/$latest/install.sh" "$jsdeliver/$repo@main/scripts/install.sh" "$setup_php/$repo/install.sh"
   bash /tmp/install.sh "${args[@]}"
 }
