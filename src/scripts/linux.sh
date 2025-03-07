@@ -187,8 +187,10 @@ update_php() {
 add_php() {
   if [ "${runner:?}" = "self-hosted" ] || [ "${use_package_cache:-true}" = "false" ]; then
     if [[ "$version" =~ ${nightly_versions:?} || "$ts" = "zts" ]]; then
+        set_log "setup_php_builder"      
         setup_php_builder
     else
+      set_log "add_packaged_php"      
       add_packaged_php
       switch_version >/dev/null 2>&1
       add_pecl
@@ -249,12 +251,15 @@ setup_php() {
   check_pre_installed
   if [[ -z "$php_config" ]] || [ "$(php_semver | cut -c 1-3)" != "$version" ]; then
     if [ ! -e "/usr/bin/php$version" ] || [ ! -e "/usr/bin/php-config$version" ]; then
+      set_log "add_php"
       add_php >/dev/null 2>&1
     else
       if ! [[ "$version" =~ ${old_versions:?} ]]; then
+        set_log "switch"
         switch_version >/dev/null 2>&1
       fi
       if [ "${update:?}" = "true" ]; then
+        set_log "update"
         update_php >/dev/null 2>&1
       else
         status="Switched to"
