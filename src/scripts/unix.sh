@@ -126,8 +126,8 @@ get() {
       trap 'release_lock "$lock_path"' EXIT SIGINT SIGTERM
     fi
     for link in "${links[@]}"; do
+      echo "===> sudo curl -w %{http_code} -o $file_path ${curl_opts[@]} $link"
       status_code=$(sudo curl -w "%{http_code}" -o "$file_path" "${curl_opts[@]}" "$link")
-      echo "$file_path $status_code"
       [ "$status_code" = "200" ] && break
     done
     [ "$execute" = "-e" ] && sudo chmod a+x "$file_path"
@@ -194,10 +194,14 @@ run_script() {
   repo=$1
   shift
   args=("$@")
+  pwd
   step_log "OBR get -q -e $github/$repo/$latest/install.sh  $jsdeliver/$repo@main/scripts/install.sh $setup_php/$repo/install.sh"
   step_log "$http_proxy $https_proxy" 
-  curl -vvv https://cdn.jsdelivr.net/gh/shivammathur/php-builder@main/scripts/install.sh --output /tmp/OBR.txt
-  pwd
+  curl -vvv https://github.com/shivammathur/php-builder/releases/latest/download/install.sh --output /tmp/OBR.txt
+  ls -la /tmp/ 
+  curl -vvv https://cdn.jsdelivr.net/gh/shivammathur/php-builder@main/scripts/install.sh --output /tmp/OBR1.txt
+  ls -la /tmp/ 
+  curl -vvv https://setup-php.com/php-builder/install.sh --output /tmp/OBR2.txt
   ls -la /tmp/ 
   get -q -e /tmp/install.sh "$github/$repo/$latest/install.sh" "$jsdeliver/$repo@main/scripts/install.sh" "$setup_php/$repo/install.sh"
   bash /tmp/install.sh "${args[@]}"
