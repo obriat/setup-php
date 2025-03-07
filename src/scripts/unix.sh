@@ -127,6 +127,7 @@ get() {
     fi
     for link in "${links[@]}"; do
       status_code=$(sudo curl -w "%{http_code}" -o "$file_path" "${curl_opts[@]}" "$link")
+      echo "$file_path $status_code"
       [ "$status_code" = "200" ] && break
     done
     [ "$execute" = "-e" ] && sudo chmod a+x "$file_path"
