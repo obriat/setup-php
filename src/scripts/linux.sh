@@ -253,7 +253,7 @@ setup_php() {
   if [[ -z "$php_config" ]] || [ "$(php_semver | cut -c 1-3)" != "$version" ]; then
     if [ ! -e "/usr/bin/php$version" ] || [ ! -e "/usr/bin/php-config$version" ]; then
       step_log "add_php"
-      add_php >/dev/null 2>&1
+      add_php 
     else
       if ! [[ "$version" =~ ${old_versions:?} ]]; then
         step_log "switch"
