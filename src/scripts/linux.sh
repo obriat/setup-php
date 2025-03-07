@@ -185,7 +185,7 @@ update_php() {
 
 # Function to install PHP.
 add_php() {
-  step_log"ADD_PHP"
+  step_log "ADD_PHP"
   if [ "${runner:?}" = "self-hosted" ] || [ "${use_package_cache:-true}" = "false" ]; then
     if [[ "$version" =~ ${nightly_versions:?} || "$ts" = "zts" ]]; then
         step_log "setup_php_builder"      
