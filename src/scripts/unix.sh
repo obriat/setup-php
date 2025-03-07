@@ -127,7 +127,8 @@ get() {
     fi
     for link in "${links[@]}"; do
       echo "===> sudo curl -w %{http_code} -o $file_path ${curl_opts[@]} $link"
-      status_code=$(sudo curl -w "%{http_code}" -o "$file_path" "${curl_opts[@]}" "$link")
+      #status_code=$(sudo curl -w "%{http_code}" -o "$file_path" "${curl_opts[@]}" "$link")
+      status_code=$(curl -w "%{http_code}" -o "$file_path" "${curl_opts[@]}" "$link")
       [ "$status_code" = "200" ] && break
     done
     [ "$execute" = "-e" ] && sudo chmod a+x "$file_path"
@@ -196,8 +197,13 @@ run_script() {
   args=("$@")
   pwd
   step_log "OBR get -q -e $github/$repo/$latest/install.sh  $jsdeliver/$repo@main/scripts/install.sh $setup_php/$repo/install.sh"
-  step_log "$http_proxy $https_proxy" 
+  step_log "LOG PROXY $http_proxy $https_proxy" 
+  echo  "ECHO PROXY $http_proxy $https_proxy"
+  sudo echo  "SUDO ECHO PROXY $http_proxy $https_proxy"
+  # 302 sur ce curl
   curl -vvv https://github.com/shivammathur/php-builder/releases/latest/download/install.sh --output /tmp/OBR.txt
+  ls -la /tmp/ 
+  curl -vvvL https://github.com/shivammathur/php-builder/releases/latest/download/install.sh --output /tmp/OBR0.txt
   ls -la /tmp/ 
   curl -vvv https://cdn.jsdelivr.net/gh/shivammathur/php-builder@main/scripts/install.sh --output /tmp/OBR1.txt
   ls -la /tmp/ 
